@@ -8,7 +8,7 @@ public class mainGame {
 	public static void main (String [] args){
 		int Turn = 1;
 		
-		ArrayList<Card> Deck1= new ArrayList();
+		ArrayList<Card> Deck1= new ArrayList<Card>();
 		Deck1.add(new Card ("Dragon    ",5,3, Turn));
 		Deck1.add(new Card ("Golbin    ",1,4, Turn));
 		Deck1.add(new Card ("Swordsman ",3,3, Turn));
@@ -30,7 +30,7 @@ public class mainGame {
 		Deck1.add(new Card ("Wolf      ",5,1, Turn));
 		Deck1.add(new Card ("Lion      ",3,1, Turn));
 		
-		ArrayList<Card> Deck2= new ArrayList();
+		ArrayList<Card> Deck2= new ArrayList<Card>();
 		Deck2.add(new Card ("Dragon    ",5,3,Turn));
 		Deck2.add(new Card ("Golbin    ",1,4,Turn));
 		Deck2.add(new Card ("Swordsman ",3,3,Turn));
@@ -61,8 +61,8 @@ public class mainGame {
 		startGame = keyStroke.nextLine();
 		
 		
-		ArrayList<Card> player1Field =  new ArrayList();
-		ArrayList<Card> player2Field= new ArrayList();
+		ArrayList<Card> player1Field =  new ArrayList<Card>();
+		ArrayList<Card> player2Field= new ArrayList<Card>();
 		int player1LP, player2LP;
 		player1LP = 10;
 		player2LP = 10;
@@ -71,8 +71,8 @@ public class mainGame {
 		
 		cardNumber = new cardGen();
 		
-		ArrayList<Card> player1Hand =  new ArrayList();
-		ArrayList<Card> player2Hand = new ArrayList();
+		ArrayList<Card> player1Hand =  new ArrayList<Card>();
+		ArrayList<Card> player2Hand = new ArrayList<Card>();
 		
 		for(int i = 0; i < 4; i++) {
 			int r = cardNumber.Number(Deck1.size());
