@@ -4,7 +4,7 @@ public class Card {
 	private String cardName;
 	private int cardAttack;
 	private int cardHealth;
-	private int turnPlayed;
+	public int turnPlayed;
 	
 	public Card(String cardName, int cardAttack, int cardHealth, int turnPlayed) {
 		this.cardName = cardName;

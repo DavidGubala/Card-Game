@@ -74,6 +74,7 @@ public class mainGame {
 		ArrayList<Card> player1Hand =  new ArrayList<Card>();
 		ArrayList<Card> player2Hand = new ArrayList<Card>();
 		
+		// Draw Cards For Both Players (WORK ON ADDING A QUEUE SOMEWHERE HERE)
 		for(int i = 0; i < 4; i++) {
 			int r = cardNumber.Number(Deck1.size());
 			player1Hand.add(Deck1.get(r));
@@ -86,6 +87,8 @@ public class mainGame {
 		}
 		
 		int opponentCard, yourCard;
+		
+		// Start of the Game 
 		do{
 			System.out.println("\n   Player One HP :" + player1LP + Field(player1Field, player2Field) + "\n    Player Two HP :" + player2LP);
 			System.out.println("\nTurn " + Turn
@@ -96,6 +99,7 @@ public class mainGame {
 					+ "\nC)End Turn");
 			playerMove = keyStroke.next();
 			
+			//Player one Selects an option A,B, or C
 			if (!playerMove.equalsIgnoreCase("A")&&!playerMove.equalsIgnoreCase("b")&&!playerMove.equalsIgnoreCase("C")){
 				while(!playerMove.equalsIgnoreCase("A")&&!playerMove.equalsIgnoreCase("B")&&!playerMove.equalsIgnoreCase("C")){
 					System.out.println("I'm sorry, " + playerMove + " is not a valid move. Please try again.");
@@ -103,19 +107,24 @@ public class mainGame {
 					
 				}
 			}
-			
+			//What happens when A is chosen
 			if(playerMove.equalsIgnoreCase("A")){
-				for(int i = 0; i < 1; i++) {
+				for(int i = 0; i < 1; i++) { //Draw one more card at the start of your turn
 					int r = cardNumber.Number(Deck1.size());
 					player1Hand.add(Deck1.get(r));
 					Deck1.remove(r);
 				}
+				
+				for(int j=0; j<5; j++){
+					player1Hand.get(j).setTurnPlayed(Turn);
+				}
+				
 				System.out.println("Which Card would you like to summon?");
 				System.out.println(displayCard(player1Hand));
 				
 				cardChosen = keyStroke.nextInt();
 				
-				if (cardChosen != 1 &&cardChosen != 2 &&cardChosen != 3&&cardChosen != 4&&cardChosen != 5){
+				if (cardChosen != 1 &&cardChosen != 2 &&cardChosen != 3&&cardChosen != 4&&cardChosen != 5){ //Check to make sure Player chooses a card
 					do{
 						System.out.println("I'm sorry, " + playerMove + " is not a valid card. Please try again.");
 						cardChosen = keyStroke.nextInt();
@@ -124,14 +133,13 @@ public class mainGame {
 				}
 				for (int i = 0; i<5; i++){
 					if (cardChosen == i ){
-					player1Field.add(player1Hand.get(i-1));
-					
-					player1Hand.remove(i-1);
+						player1Field.add(player1Hand.get(i-1));
+						player1Hand.remove(i-1);
 					}
 				}
 				
 			}
-		
+			//Return to this one A is executed
 			System.out.println("\n   Player One HP :" + player1LP + Field(player1Field, player2Field) + "\n   Player Two HP :" + player2LP);
 			System.out.println("\nTurn " + Turn
 					+ "\nPlayer One, What would you like to do next?"
@@ -148,55 +156,82 @@ public class mainGame {
 				}
 			}
 			if(playerMove.equalsIgnoreCase("B")){
-				if(player1Field.size()>0){
-					System.out.println(player1Side(player1Field) + "\n Which card would you like to attack with?");
-					cardChosen = keyStroke.nextInt();
-					
-					if (player1Field.get(cardChosen-1).getTurnPlayed() != Turn){
-						while(player1Field.get(cardChosen-1).getTurnPlayed() != Turn){
-							System.out.println("That is not a valid card number. Enter Another Card");
-							cardChosen = keyStroke.nextInt();
+				do{	
+					if(player1Field.size()>0){
+						System.out.println(player1Side(player1Field) + "\n Which card would you like to attack with? Exit by entering 0");
+						cardChosen = keyStroke.nextInt();
+						
+						/*if (player1Field.get(cardChosen-1).getTurnPlayed() == Turn || cardChosen != 0 ){
+							while(player1Field.get(cardChosen-1).getTurnPlayed() == Turn || cardChosen != 0 ){
+								System.out.println("A card cannot attack to same turn it has been played. Enter Another Card or enter 0 to go back");
+								cardChosen = keyStroke.nextInt();
+							}
 						}
-					}
-					if(cardChosen > player1Field.size()){
-						while(cardChosen > player1Field.size()){
-							System.out.println("That is not a valid card number. Enter Another Card");
+						if(cardChosen > player1Field.size()){
+							while(cardChosen > player1Field.size()){
+								System.out.println("That is not a valid card number. Enter Another Card or enter 0 to go back");
+								cardChosen = keyStroke.nextInt();
+							}
+						} */ //Broken
+						
+						if (cardChosen != 0){ 
+							yourCard = cardChosen-1;
+							System.out.println(player2Side(player2Field)+ "\n\nWhich card would you like to attack with your " + player1Field.get(yourCard).getCardName());
 							cardChosen = keyStroke.nextInt();
-						}
+							//Attack Step
+							if (player2Field.size() != 0) {
+								if (player2Field.size() < cardChosen - 1){
+									while(player2Field.size() < cardChosen - 1){
+										System.out.println("That is not a valid card number. Enter Another Card");
+										cardChosen = keyStroke.nextInt();
+									}
+								}
+							
+								opponentCard = cardChosen-1;
+								
+								System.out.println(displayAttack(player1Field.get(yourCard),player2Field.get(opponentCard)));
+								player1Field.get(yourCard).setCardHealth(player1Field.get(yourCard).getCardHealth() - player2Field.get(opponentCard).getCardAttack());
+								player2Field.get(opponentCard).setCardHealth(player2Field.get(opponentCard).getCardHealth() - player1Field.get(yourCard).getCardAttack());
+								
+								if (player1Field.get(yourCard).getCardHealth() <=0){
+									System.out.println("Player One's " + player1Field.get(yourCard).getCardName().trim() + " has been destroyed");
+									player1Field.remove(yourCard);
+								}
+								if (player2Field.get(opponentCard).getCardHealth() <=0){
+									System.out.println("Player Two's " + player2Field.get(opponentCard).getCardName().trim() + " has been destroyed");
+									player2Field.remove(opponentCard);
+								}
+								playerMove ="0";
+							}else {
+								player2LP = player2LP - player1Field.get(yourCard).getCardAttack();
+								System.out.println("Player 2 has taken"+ player1Field.get(yourCard).getCardAttack() +" damage");
+							}
+						}else{
+							playerMove ="0";
+						}	
 					}
-					
-					
-					yourCard = cardChosen-1;
-					System.out.println(player2Side(player2Field)+ "\n\nWhich card would you like to attack with your " + player1Field.get(yourCard).getCardName());
-					cardChosen = keyStroke.nextInt();
-					//next line is wrong fix it
-					if (player2Field.size() < cardChosen){
-						while(player2Field.size() < cardChosen){
-							System.out.println("That is not a valid card number. Enter Another Card");
-							cardChosen = keyStroke.nextInt();
-						}
+					else{
+						System.out.println("You  have no cards summoned on the field!");
+						playerMove = "0";
 					}
-					
-					opponentCard = cardChosen-1;
-					
-					System.out.println(displayAttack(player1Field.get(yourCard),player2Field.get(opponentCard)));
-					player1Field.get(yourCard).setCardHealth(player1Field.get(yourCard).getCardHealth() - player2Field.get(opponentCard).getCardAttack());
-					player2Field.get(opponentCard).setCardHealth(player2Field.get(opponentCard).getCardHealth() - player1Field.get(yourCard).getCardAttack());
-					
-					if (player1Field.get(yourCard).getCardHealth() <=0){
-						System.out.println("Player One's " + player1Field.get(yourCard).getCardName().trim() + " has been destroyed");
-						player1Field.remove(yourCard);
+					playerMove ="0";
+				}while(playerMove != "0");
+				
+				System.out.println("\n   Player One HP :" + player1LP + Field(player1Field, player2Field) + "\n   Player Two HP :" + player2LP);
+				System.out.println("\nTurn " + Turn
+						+ "\nPlayer One, What would you like to do next?"
+						+ "\nA)Summon Card (Only one per Turn)" 
+						+ "\nB)Attack"
+						+ "\nC)End Turn");
+				
+				playerMove = keyStroke.next();
+				
+				if (!playerMove.equalsIgnoreCase("C")){
+					while(!playerMove.equalsIgnoreCase("C")){
+						System.out.println("I'm sorry, you must now end your turn with C");
+						playerMove = keyStroke.next();
 					}
-					if (player2Field.get(opponentCard).getCardHealth() <=0){
-						System.out.println("Player Two's " + player2Field.get(opponentCard).getCardName().trim() + " has been destroyed");
-						player2Field.remove(opponentCard);
-					}
-					
 				}
-				else{
-					System.out.println("You  have no cards summoned on the field!");
-				}
-			
 			}while(!playerMove.equalsIgnoreCase("C"));
 			
 			
