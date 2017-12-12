@@ -150,7 +150,6 @@ public class mainGame {
 					if (cardChosen == i ){
 						player1Field.add(player1Hand.get(i-1));
 						if(player1Hand.get(i-1).checkIsSpell() == true && graveyard1.isEmpty() != true) {//checks if cards are in graveyard and if you choose a spellcard it will add the graveyard to field and remove from hand and graveyard
-							System.out.println("grave size" + graveyard1.size());
 							player1Field.add(graveyard1.pop());
 						}
 						player1Hand.remove(i-1);
@@ -222,7 +221,6 @@ public class mainGame {
 								if (player1Field.get(yourCard).getCardHealth() <=0){
 									System.out.println("Player One's " + player1Field.get(yourCard).getCardName().trim() + " has been destroyed");
 									graveyard1.push(player1Field.get(yourCard));
-									System.out.println("ASdasdasd" + graveyard1.size());
 									player1Field.remove(yourCard);
 								}
 								if (player2Field.get(opponentCard).getCardHealth() <=0){
