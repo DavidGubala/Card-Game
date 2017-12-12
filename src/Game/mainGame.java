@@ -1,7 +1,7 @@
 package Game;
 
 import java.util.ArrayList;
-import java.*;
+import java.util.Stack;
 import java.util.Scanner;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -14,14 +14,14 @@ public class mainGame {
 		
 		ArrayList<Card> Deck1= new ArrayList<Card>();
 		Deck1.add(new Card ("Dragon    ",5,3, Turn));
-		Deck1.add(new Card ("Golbin    ",1,4, Turn));
+		Deck1.add(new Card ("Golbin-SPL",1,4, Turn,true));
 		Deck1.add(new Card ("Swordsman ",3,3, Turn));
 		Deck1.add(new Card ("Shield    ",0,9, Turn));
 		Deck1.add(new Card ("Imp       ",1,1, Turn));
 		Deck1.add(new Card ("Archer    ",2,1, Turn));
 		Deck1.add(new Card ("Warrior   ",4,4, Turn));
 		Deck1.add(new Card ("Troll     ",3,2, Turn));
-		Deck1.add(new Card ("Mage      ",5,1, Turn));
+		Deck1.add(new Card ("Mage-SPL  ",5,1, Turn,true));
 		Deck1.add(new Card ("Ghoul     ",3,1, Turn));
 		Deck1.add(new Card ("Warlock   ",5,3, Turn));
 		Deck1.add(new Card ("Elf       ",1,4, Turn));
@@ -30,20 +30,20 @@ public class mainGame {
 		Deck1.add(new Card ("Berserker ",6,7, Turn));
 		Deck1.add(new Card ("Clown     ",2,1, Turn));
 		Deck1.add(new Card ("Joker     ",4,4, Turn));
-		Deck1.add(new Card ("Priest    ",1,2, Turn));
+		Deck1.add(new Card ("Priest-SPL",1,2, Turn,true));
 		Deck1.add(new Card ("Wolf      ",5,1, Turn));
 		Deck1.add(new Card ("Lion      ",3,1, Turn));
 		
 		ArrayList<Card> Deck2= new ArrayList<Card>();
 		Deck2.add(new Card ("Dragon    ",5,3,Turn));
-		Deck2.add(new Card ("Golbin    ",1,4,Turn));
+		Deck2.add(new Card ("Golbin-SPL",1,4,Turn,true));
 		Deck2.add(new Card ("Swordsman ",3,3,Turn));
 		Deck2.add(new Card ("Shield    ",0,9,Turn));
 		Deck2.add(new Card ("Imp       ",1,1,Turn));
 		Deck2.add(new Card ("Archer    ",2,1,Turn));
 		Deck2.add(new Card ("Warrior   ",4,4,Turn));
 		Deck2.add(new Card ("Troll     ",3,2,Turn));
-		Deck2.add(new Card ("Mage      ",5,1,Turn));
+		Deck2.add(new Card ("Mage-SPL  ",5,1,Turn,true));
 		Deck2.add(new Card ("Ghoul     ",3,1,Turn));
 		Deck2.add(new Card ("Warlock   ",5,3,Turn));
 		Deck2.add(new Card ("Elf       ",1,4,Turn));
@@ -52,7 +52,7 @@ public class mainGame {
 		Deck2.add(new Card ("Berserker ",6,7,Turn));
 		Deck2.add(new Card ("Clown     ",2,1,Turn));
 		Deck2.add(new Card ("Joker     ",4,4,Turn));
-		Deck2.add(new Card ("Priest    ",1,2,Turn));
+		Deck2.add(new Card ("Priest-SPL",1,2,Turn,true));
 		Deck2.add(new Card ("Wolf      ",5,1,Turn)); // Deck2.get(0).setHealth(Deck2.get(0).getHealth() - 1);
 		Deck2.add(new Card ("Lion      ",3,1,Turn)); // Deck2.get(0).decreaseCardHealthByOne();
 		
@@ -80,8 +80,8 @@ public class mainGame {
 		
 		ArrayList<Card> player1Hand =  new ArrayList<Card>();
 		ArrayList<Card> player2Hand =  new ArrayList<Card>();
-		
-
+		Stack<Card> graveyard1 = new Stack<Card>();
+		Stack<Card> graveyard2 = new Stack<Card>();
 		
 
 		
@@ -128,7 +128,7 @@ public class mainGame {
 
 				player1Hand.add(p1Cards.poll());
 
-		
+				
 				
 				for(int j=0; j<5; j++){
 					player1Hand.get(j).setTurnPlayed(Turn);
@@ -149,10 +149,14 @@ public class mainGame {
 				for (int i = 0; i<5; i++){
 					if (cardChosen == i ){
 						player1Field.add(player1Hand.get(i-1));
+						if(player1Hand.get(i-1).checkIsSpell() == true && graveyard1.isEmpty() != false) {//checks if cards are in graveyard and if you choose a spellcard it will add the graveyard to field and remove from hand and graveyard
+							player1Field.add(graveyard1.pop());
+						}
 						player1Hand.remove(i-1);
 					}
 				}
 				//Return to this one A is executed
+				
 				System.out.println("\n   Player One HP :" + player1LP + Field(player1Field, player2Field) + "\n   Player Two HP :" + player2LP);
 				System.out.println("\nTurn " + Turn
 						+ "\nPlayer One, What would you like to do next?"
@@ -203,10 +207,13 @@ public class mainGame {
 								
 								if (player1Field.get(yourCard).getCardHealth() <=0){
 									System.out.println("Player One's " + player1Field.get(yourCard).getCardName().trim() + " has been destroyed");
+									graveyard1.push(player1Field.get(yourCard));
 									player1Field.remove(yourCard);
+									
 								}
 								if (player2Field.get(opponentCard).getCardHealth() <=0){
 									System.out.println("Player Two's " + player2Field.get(opponentCard).getCardName().trim() + " has been destroyed");
+									graveyard2.push(player2Field.get(opponentCard));
 									player2Field.remove(opponentCard);
 								}
 								playerMove ="0";
@@ -290,6 +297,9 @@ public class mainGame {
 				for (int i = 0; i<5; i++){
 					if (cardChosen == i ){
 					player2Field.add(player2Hand.get(i-1));
+					if(player2Hand.get(i-1).checkIsSpell() == true && graveyard2.isEmpty() != false) {
+						player2Field.add(graveyard2.pop());
+					}
 					player2Hand.remove(i-1);
 					}
 				}
@@ -343,10 +353,12 @@ public class mainGame {
 								
 								if (player2Field.get(yourCard).getCardHealth() <=0){
 									System.out.println("Player Two's " + player2Field.get(yourCard).getCardName().trim() + " has been destroyed");
+									graveyard2.push(player2Field.get(yourCard));
 									player2Field.remove(yourCard);
 								}
 								if (player1Field.get(opponentCard).getCardHealth() <=0){
 									System.out.println("Player One's " + player1Field.get(opponentCard).getCardName().trim() + " has been destroyed");
+									graveyard1.push(player1Field.get(opponentCard));
 									player1Field.remove(opponentCard);
 								}
 								playerMove ="0";
