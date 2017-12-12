@@ -5,12 +5,22 @@ public class Card {
 	private int cardAttack;
 	private int cardHealth;
 	public int turnPlayed;
+	public boolean isSpell;
 	
 	public Card(String cardName, int cardAttack, int cardHealth, int turnPlayed) {
 		this.cardName = cardName;
 		this.cardAttack = cardAttack;
 		this.cardHealth = cardHealth;
 		this.turnPlayed = turnPlayed;
+		this.isSpell = false;
+	}
+	
+	public Card(String cardName, int cardAttack, int cardHealth, int turnPlayed, boolean isSpell) {
+		this.cardName = cardName;
+		this.cardAttack = cardAttack;
+		this.cardHealth = cardHealth;
+		this.turnPlayed = turnPlayed;
+		this.isSpell = isSpell;
 	}
 
 	public String getCardName() {
@@ -32,6 +42,10 @@ public class Card {
 	public int getCardHealth() {
 		return cardHealth;
 	}
+	
+	public boolean checkIsSpell() {
+		return isSpell;
+	}
 
 	public void setCardHealth(int cardHealth) {
 		this.cardHealth = cardHealth;
@@ -49,6 +63,7 @@ public class Card {
 	public void setTurnPlayed(int turnPlayed) {
 		this.turnPlayed = turnPlayed;
 	}
+
 	
 	
 }
