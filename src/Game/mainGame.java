@@ -88,13 +88,11 @@ public class mainGame {
 		// Draw Cards For Both Players (WORK ON ADDING A QUEUE SOMEWHERE HERE)
 		for(int i = 0; i < Deck1.size()-1; i++) {
 			int r = cardNumber.Number(Deck1.size());	
-			//player1Hand.add(Deck1.get(r));
 			p1Cards.add(Deck1.get(r));
 			Deck1.remove(r);
 		}
 		for(int i = 0; i < Deck1.size()-1; i++) {
 			int r = cardNumber.Number(Deck2.size());
-			//player2Hand.add(Deck2.get(r));
 			p2Cards.add(Deck2.get(r));
 			Deck2.remove(r);
 		}
@@ -127,15 +125,10 @@ public class mainGame {
 			}
 			//What happens when A is chosen
 			if(playerMove.equalsIgnoreCase("A")){
-//				for(int i = 0; i < 1; i++) { //Draw one more card at the start of your turn
-//					int r = cardNumber.Number(Deck1.size());
-//					player1Hand.add(Deck1.get(r));
-//					Deck1.remove(r);
-				player1Hand.add(p1Cards.poll());
-//				}
-			
 
-			
+				player1Hand.add(p1Cards.poll());
+
+		
 				
 				for(int j=0; j<5; j++){
 					player1Hand.get(j).setTurnPlayed(Turn);
@@ -275,11 +268,7 @@ public class mainGame {
 			}
 			
 			if(playerMove.equalsIgnoreCase("A")){
-//				for(int i = 0; i < 1; i++) {
-//					int r = cardNumber.Number(Deck2.size());
-//					player2Hand.add(Deck2.get(r));
-//					Deck2.remove(r);
-//				}
+
 				player2Hand.add(p2Cards.poll());
 				
 				for(int j=0; j<5; j++){
