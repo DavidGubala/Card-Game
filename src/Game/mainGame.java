@@ -146,10 +146,10 @@ public class mainGame {
 						
 					}while(cardChosen != 1 &&cardChosen != 2 &&cardChosen != 3&&cardChosen != 4&&cardChosen != 5);
 				}
-				for (int i = 0; i<5; i++){
+				for (int i = 0; i<6; i++){
 					if (cardChosen == i ){
 						player1Field.add(player1Hand.get(i-1));
-						if(player1Hand.get(i-1).checkIsSpell() == true && graveyard1.isEmpty() != false) {//checks if cards are in graveyard and if you choose a spellcard it will add the graveyard to field and remove from hand and graveyard
+						if(player1Hand.get(i-1).checkIsSpell() == true && graveyard1.isEmpty() != true) {//checks if cards are in graveyard and if you choose a spellcard it will add the graveyard to field and remove from hand and graveyard
 							player1Field.add(graveyard1.pop());
 						}
 						player1Hand.remove(i-1);
@@ -294,7 +294,7 @@ public class mainGame {
 						
 					}while(cardChosen != 1 &&cardChosen != 2 &&cardChosen != 3&&cardChosen != 4&&cardChosen != 5);
 				}
-				for (int i = 0; i<5; i++){
+				for (int i = 0; i<6; i++){
 					if (cardChosen == i ){
 					player2Field.add(player2Hand.get(i-1));
 					if(player2Hand.get(i-1).checkIsSpell() == true && graveyard2.isEmpty() != false) {
