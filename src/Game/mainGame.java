@@ -78,22 +78,20 @@ public class mainGame {
 		ArrayList<Card> player1Hand =  new ArrayList<Card>();
 		ArrayList<Card> player2Hand =  new ArrayList<Card>();
 		
-		Queue<Card> p1Hand = new LinkedList<Card>();
-		Queue<Card> p2Hand = new LinkedList<Card>();
+		Queue<Card> p1Cards = new LinkedList<Card>();
+		Queue<Card> p2Cards = new LinkedList<Card>();
 		
 
 		
 		// Draw Cards For Both Players (WORK ON ADDING A QUEUE SOMEWHERE HERE)
 		for(int i = 0; i < 4; i++) {
 			int r = cardNumber.Number(Deck1.size());
-			//player1Hand.add(Deck1.get(r));
-			p1Hand.add(Deck1.get(r));
+			player1Hand.add(Deck1.get(r));
 			Deck1.remove(r);
 		}
 		for(int i = 0; i < 4; i++) {
 			int r = cardNumber.Number(Deck2.size());
-			//player2Hand.add(Deck2.get(r));
-			p2Hand.add(Deck2.get(r));
+			player2Hand.add(Deck2.get(r));
 			Deck2.remove(r);
 		}
 		
@@ -122,13 +120,11 @@ public class mainGame {
 			if(playerMove.equalsIgnoreCase("A")){
 				for(int i = 0; i < 1; i++) { //Draw one more card at the start of your turn
 					int r = cardNumber.Number(Deck1.size());
-					//player1Hand.add(Deck1.get(r));
-					p1Hand.add(Deck1.get(r));
+					player1Hand.add(Deck1.get(r));
 					Deck1.remove(r);
 				}
 				
 				for(int j=0; j<5; j++){
-					//player1Hand.get(j).setTurnPlayed(Turn);
 					player1Hand.get(j).setTurnPlayed(Turn);
 				}
 				
