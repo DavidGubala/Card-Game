@@ -14,7 +14,7 @@ public class mainGame {
 		
 		ArrayList<Card> Deck1= new ArrayList<Card>();
 		Deck1.add(new Card ("Dragon    ",5,3, Turn));
-		Deck1.add(new Card ("Golbin-SPL",1,4, Turn,true));
+		Deck1.add(new Card ("Golbin    ",1,4, Turn));
 		Deck1.add(new Card ("Swordsman ",3,3, Turn));
 		Deck1.add(new Card ("Shield    ",0,9, Turn));
 		Deck1.add(new Card ("Imp       ",1,1, Turn));
@@ -26,7 +26,7 @@ public class mainGame {
 		Deck1.add(new Card ("Warlock   ",5,3, Turn));
 		Deck1.add(new Card ("Elf       ",1,4, Turn));
 		Deck1.add(new Card ("Giant     ",3,3, Turn));
-		Deck1.add(new Card ("Genius    ",1,9, Turn));
+		Deck1.add(new Card ("Genius-SPL",1,9, Turn,true));
 		Deck1.add(new Card ("Berserker ",6,7, Turn));
 		Deck1.add(new Card ("Clown     ",2,1, Turn));
 		Deck1.add(new Card ("Joker     ",4,4, Turn));
@@ -36,7 +36,7 @@ public class mainGame {
 		
 		ArrayList<Card> Deck2= new ArrayList<Card>();
 		Deck2.add(new Card ("Dragon    ",5,3,Turn));
-		Deck2.add(new Card ("Golbin-SPL",1,4,Turn,true));
+		Deck2.add(new Card ("Golbin    ",1,4,Turn));
 		Deck2.add(new Card ("Swordsman ",3,3,Turn));
 		Deck2.add(new Card ("Shield    ",0,9,Turn));
 		Deck2.add(new Card ("Imp       ",1,1,Turn));
@@ -48,14 +48,13 @@ public class mainGame {
 		Deck2.add(new Card ("Warlock   ",5,3,Turn));
 		Deck2.add(new Card ("Elf       ",1,4,Turn));
 		Deck2.add(new Card ("Giant     ",3,3,Turn));
-		Deck2.add(new Card ("Genius    ",1,9,Turn));
+		Deck2.add(new Card ("Genius-SPL",1,9,Turn,true));
 		Deck2.add(new Card ("Berserker ",6,7,Turn));
 		Deck2.add(new Card ("Clown     ",2,1,Turn));
 		Deck2.add(new Card ("Joker     ",4,4,Turn));
 		Deck2.add(new Card ("Priest-SPL",1,2,Turn,true));
-		Deck2.add(new Card ("Wolf      ",5,1,Turn)); // Deck2.get(0).setHealth(Deck2.get(0).getHealth() - 1);
-		Deck2.add(new Card ("Lion      ",3,1,Turn)); // Deck2.get(0).decreaseCardHealthByOne();
-		
+		Deck2.add(new Card ("Wolf      ",5,1,Turn));
+		Deck2.add(new Card ("Lion      ",3,1,Turn)); 
 		
 								
 		Scanner keyStroke = new Scanner (System.in);
@@ -85,7 +84,7 @@ public class mainGame {
 		
 
 		
-		// Draw Cards For Both Players (WORK ON ADDING A QUEUE SOMEWHERE HERE)
+		// Draw Cards For Both Players
 		for(int i = 0; i < Deck1.size()-1; i++) {
 			int r = cardNumber.Number(Deck1.size());	
 			p1Cards.add(Deck1.get(r));
@@ -106,6 +105,11 @@ public class mainGame {
 		
 		// Start of the Game 
 		do{
+
+			if (player1LP <=0) {
+				break;
+			}
+			
 			System.out.println("\n   Player One HP :" + player1LP + Field(player1Field, player2Field) + "\n    Player Two HP :" + player2LP);
 			System.out.println("\nTurn " + Turn
 					+ "\n*Player One draws new cards* "
@@ -148,8 +152,10 @@ public class mainGame {
 				}
 				for (int i = 0; i<6; i++){
 					if (cardChosen == i ){
+						player1Hand.get(i-1).setTurnPlayed(Turn);
 						player1Field.add(player1Hand.get(i-1));
 						if(player1Hand.get(i-1).checkIsSpell() == true && graveyard1.isEmpty() != true) {//checks if cards are in graveyard and if you choose a spellcard it will add the graveyard to field and remove from hand and graveyard
+							graveyard1.get(0).setTurnPlayed(Turn);
 							player1Field.add(graveyard1.pop());
 						}
 						player1Hand.remove(i-1);
@@ -218,13 +224,18 @@ public class mainGame {
 								player1Field.get(yourCard).setCardHealth(player1Field.get(yourCard).getCardHealth() - player2Field.get(opponentCard).getCardAttack());
 								player2Field.get(opponentCard).setCardHealth(player2Field.get(opponentCard).getCardHealth() - player1Field.get(yourCard).getCardAttack());
 								
+								System.out.println("Player One's " + player1Field.get(yourCard).getCardName().trim() + " has taken "+ player2Field.get(opponentCard).getCardAttack() +" damage.");
+								System.out.println("Player Two's " + player2Field.get(opponentCard).getCardName().trim() + "  has taken "+ player1Field.get(yourCard).getCardAttack() + " damage.");
+								
 								if (player1Field.get(yourCard).getCardHealth() <=0){
 									System.out.println("Player One's " + player1Field.get(yourCard).getCardName().trim() + " has been destroyed");
+									player1Field.get(yourCard).setCardHealth(player1Field.get(yourCard).originalCardHealth());
 									graveyard1.push(player1Field.get(yourCard));
 									player1Field.remove(yourCard);
 								}
 								if (player2Field.get(opponentCard).getCardHealth() <=0){
 									System.out.println("Player Two's " + player2Field.get(opponentCard).getCardName().trim() + " has been destroyed");
+									player2Field.get(opponentCard).setCardHealth(player2Field.get(opponentCard).originalCardHealth());
 									graveyard2.push(player2Field.get(opponentCard));
 									player2Field.remove(opponentCard);
 								}
@@ -241,6 +252,10 @@ public class mainGame {
 					}
 					playerMove ="0";
 				}while(playerMove != "0");
+				
+				if (player2LP <=0) {
+					break;
+				}
 				
 				System.out.println("\n   Player One HP :" + player1LP + Field(player1Field, player2Field) + "\n   Player Two HP :" + player2LP);
 				System.out.println("\nTurn " + Turn
@@ -265,6 +280,9 @@ public class mainGame {
 			
 			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			
+			if (player2LP <=0) {
+				break;
+			}
 			
 			//Start Player 2 Turn
 			System.out.println("\n   Player One HP :" + player1LP + Field(player1Field, player2Field) + "\n    Player Two HP :" + player2LP);
@@ -287,6 +305,8 @@ public class mainGame {
 			if(playerMove.equalsIgnoreCase("A")){
 
 				player2Hand.add(p2Cards.poll());
+
+				
 				
 				for(int j=0; j<5; j++){
 					player2Hand.get(j).setTurnPlayed(Turn);
@@ -297,7 +317,7 @@ public class mainGame {
 				
 				cardChosen = keyStroke.nextInt();
 				
-				if (cardChosen != 1 &&cardChosen != 2 &&cardChosen != 3&&cardChosen != 4&&cardChosen != 5){
+				if (cardChosen != 1 &&cardChosen != 2 &&cardChosen != 3&&cardChosen != 4&&cardChosen != 5){ //Check to make sure Player chooses a card
 					do{
 						System.out.println("I'm sorry, " + playerMove + " is not a valid card. Please try again.");
 						cardChosen = keyStroke.nextInt();
@@ -306,16 +326,20 @@ public class mainGame {
 				}
 				for (int i = 0; i<6; i++){
 					if (cardChosen == i ){
-					player2Field.add(player2Hand.get(i-1));
-					if(player2Hand.get(i-1).checkIsSpell() == true && graveyard2.isEmpty() != false) {
-						player2Field.add(graveyard2.pop());
-					}
-					player2Hand.remove(i-1);
+						player2Hand.get(i-1).setTurnPlayed(Turn);
+						player2Field.add(player2Hand.get(i-1));
+						if(player2Hand.get(i-1).checkIsSpell() == true && graveyard2.isEmpty() != true) {//checks if cards are in graveyard and if you choose a spellcard it will add the graveyard to field and remove from hand and graveyard
+							graveyard1.get(0).setTurnPlayed(Turn);
+							player2Field.add(graveyard2.pop());
+						}
+						player2Hand.remove(i-1);
 					}
 				}
+				//Return to this one A is executed
+				
 				System.out.println("\n   Player One HP :" + player1LP + Field(player1Field, player2Field) + "\n   Player Two HP :" + player2LP);
 				System.out.println("\nTurn " + Turn
-						+ "\nPlayer Two, What would you like to do next?"
+						+ "\nPlayer One, What would you like to do next?"
 						+ "\nA)Summon Card (Only one per Turn)" 
 						+ "\nB)Attack"
 						+ "\nC)End Turn");
@@ -328,23 +352,36 @@ public class mainGame {
 					if(player2Field.size()>0){
 						System.out.println(player2Side(player2Field) + "\n Which card would you like to attack with? Exit by entering 0");
 						cardChosen = keyStroke.nextInt();
-						
-						/*if (player1Field.get(cardChosen-1).getTurnPlayed() == Turn || cardChosen != 0 ){
-							while(player1Field.get(cardChosen-1).getTurnPlayed() == Turn || cardChosen != 0 ){
-								System.out.println("A card cannot attack to same turn it has been played. Enter Another Card or enter 0 to go back");
-								cardChosen = keyStroke.nextInt();
+						boolean okayCard = false;
+						do {
+							
+							if(cardChosen == 0){
+								break;
 							}
-						}
-						if(cardChosen > player1Field.size()){
-							while(cardChosen > player1Field.size()){
-								System.out.println("That is not a valid card number. Enter Another Card or enter 0 to go back");
-								cardChosen = keyStroke.nextInt();
-							}
-						} */ //Broken just like for Player 1
+								int turnCardPlayed = player2Field.get(cardChosen-1).getTurnPlayed();
+								if (turnCardPlayed == Turn && cardChosen != 0 || cardChosen > player2Field.size()- 1 ){
+									while(player2Field.get(cardChosen-1).getTurnPlayed() == Turn && cardChosen != 0 ){
+										System.out.println("A card cannot attack to same turn it has been played. Enter Another Card or enter 0 to go back");
+										cardChosen = keyStroke.nextInt();
+										if(cardChosen == 0 || cardChosen <= player2Field.size()-1) {
+											break;
+										}
+									}
+									while(player2Field.size() < cardChosen && cardChosen != 0 ){
+										System.out.println("That is not a valid playcard number. Enter Another Card or enter 0 to go back");
+										cardChosen = keyStroke.nextInt();
+										if(cardChosen == 0 || cardChosen >= player2Field.size()-1) {
+											break;
+										}
+									}
+								}else {
+									okayCard = true;
+								}
+						}while(okayCard = false);
 						
 						if (cardChosen != 0){ 
-							yourCard = cardChosen - 1 ;
-							System.out.println(player1Side(player1Field)+ "\n\nWhich card would you like to attack with your " + player2Field.get(yourCard-1).getCardName());
+							yourCard = cardChosen-1;
+							System.out.println(player1Side(player1Field)+ "\n\nWhich card would you like to attack with your " + player2Field.get(yourCard).getCardName());
 							cardChosen = keyStroke.nextInt();
 							//Attack Step
 							if (player1Field.size() != 0) {
@@ -355,19 +392,24 @@ public class mainGame {
 									}
 								}
 							
-								opponentCard = cardChosen -1;
+								opponentCard = cardChosen-1;
 								
 								System.out.println(displayAttack(player2Field.get(yourCard),player1Field.get(opponentCard)));
 								player2Field.get(yourCard).setCardHealth(player2Field.get(yourCard).getCardHealth() - player1Field.get(opponentCard).getCardAttack());
 								player1Field.get(opponentCard).setCardHealth(player1Field.get(opponentCard).getCardHealth() - player2Field.get(yourCard).getCardAttack());
 								
+								System.out.println("Player Two's " + player2Field.get(yourCard).getCardName().trim() + " has taken "+ player1Field.get(opponentCard).getCardAttack() +" damage.");
+								System.out.println("Player One's " + player1Field.get(opponentCard).getCardName().trim() + "  has taken "+ player2Field.get(yourCard).getCardAttack() + " damage.");
+								
 								if (player2Field.get(yourCard).getCardHealth() <=0){
 									System.out.println("Player Two's " + player2Field.get(yourCard).getCardName().trim() + " has been destroyed");
+									player2Field.get(yourCard).setCardHealth(player2Field.get(yourCard).originalCardHealth());
 									graveyard2.push(player2Field.get(yourCard));
 									player2Field.remove(yourCard);
 								}
 								if (player1Field.get(opponentCard).getCardHealth() <=0){
 									System.out.println("Player One's " + player1Field.get(opponentCard).getCardName().trim() + " has been destroyed");
+									player1Field.get(opponentCard).setCardHealth(player1Field.get(opponentCard).originalCardHealth());
 									graveyard1.push(player1Field.get(opponentCard));
 									player1Field.remove(opponentCard);
 								}
@@ -376,9 +418,7 @@ public class mainGame {
 								player1LP = player1LP - player2Field.get(yourCard).getCardAttack();
 								System.out.println("Player 1 has taken "+ player2Field.get(yourCard).getCardAttack() +" damage");
 							}
-						}else{
-							playerMove ="0";
-						}	
+						}
 					}
 					else{
 						System.out.println("You  have no cards summoned on the field!");
@@ -386,6 +426,10 @@ public class mainGame {
 					}
 					playerMove ="0";
 				}while(playerMove != "0");
+				
+				if (player1LP <=0) {
+					break;
+				}
 				
 				System.out.println("\n   Player One HP :" + player1LP + Field(player1Field, player2Field) + "\n   Player Two HP :" + player2LP);
 				System.out.println("\nTurn " + Turn
@@ -402,7 +446,6 @@ public class mainGame {
 						playerMove = keyStroke.next();
 					}
 				}
-			
 			}while(!playerMove.equalsIgnoreCase("C"));
 			
 			
@@ -410,9 +453,16 @@ public class mainGame {
 			
 			Turn++;
 			
-		}while (player1LP >= 0 || player2LP >= 0);
-			
-		System.out.println("Good Game");
+		}while (player1LP > 0 && player2LP > 0);
+		//END GAME
+		if (player1LP <= 0) {
+			System.out.println("Player 1's Life Points have reached 0");
+			System.out.println("\nPlayer 2 has won the game.");
+		}else if (player2LP <= 0) {
+			System.out.println("Player 2's Life Points have reached 0");
+			System.out.println("\nPlayer 1 has won the game.");
+		}
+		System.out.println("\nGood Game");
 	}
 	
 	public static String displayCard(ArrayList <Card> hand){

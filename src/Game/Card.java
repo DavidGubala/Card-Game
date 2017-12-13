@@ -4,6 +4,7 @@ public class Card {
 	private String cardName;
 	private int cardAttack;
 	private int cardHealth;
+	private int cardHealthog;
 	public int turnPlayed;
 	public boolean isSpell;
 	
@@ -11,6 +12,7 @@ public class Card {
 		this.cardName = cardName;
 		this.cardAttack = cardAttack;
 		this.cardHealth = cardHealth;
+		this.cardHealthog = cardHealth;
 		this.turnPlayed = turnPlayed;
 		this.isSpell = false;
 	}
@@ -19,6 +21,7 @@ public class Card {
 		this.cardName = cardName;
 		this.cardAttack = cardAttack;
 		this.cardHealth = cardHealth;
+		this.cardHealthog = cardHealth;
 		this.turnPlayed = turnPlayed;
 		this.isSpell = isSpell;
 	}
@@ -42,20 +45,16 @@ public class Card {
 	public int getCardHealth() {
 		return cardHealth;
 	}
-	
-	public boolean checkIsSpell() {
-		return isSpell;
+	public int originalCardHealth() {
+		return cardHealthog;
 	}
-
 	public void setCardHealth(int cardHealth) {
 		this.cardHealth = cardHealth;
 	}
 	
-	public void decreaseCardHealthByOne() {
-		this.cardHealth--;
+	public boolean checkIsSpell() {
+		return isSpell;
 	}
-
-	
 	public int getTurnPlayed() {
 		return turnPlayed;
 	}
