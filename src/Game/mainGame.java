@@ -110,7 +110,7 @@ public class mainGame {
 				break;
 			}
 			
-			System.out.println("\n   Player One HP :" + player1LP + Field(player1Field, player2Field) + "\n    Player Two HP :" + player2LP);
+			System.out.println("\n   Player One HP :" + player1LP + Field(player1Field, player2Field) + "\n   Player Two HP :" + player2LP);
 			System.out.println("\nTurn " + Turn
 					+ "\n*Player One draws new cards* "
 					+ "\nPlayer One, What is your move?"
@@ -141,15 +141,17 @@ public class mainGame {
 				System.out.println("Which Card would you like to summon?");
 				System.out.println(displayCard(player1Hand));
 				
-				cardChosen = keyStroke.nextInt();
+				playerMove = keyStroke.next();
 				
-				if (cardChosen != 1 &&cardChosen != 2 &&cardChosen != 3&&cardChosen != 4&&cardChosen != 5){ //Check to make sure Player chooses a card
-					do{
+				if (!playerMove.equals("1") && !playerMove.equals("2") && !playerMove.equals("3") && !playerMove.equals("4") && !playerMove.equals("5")){ //Check to make sure Player chooses a card
+					while(!playerMove.equals("1") && !playerMove.equals("2") && !playerMove.equals("3") && !playerMove.equals("4") && !playerMove.equals("5")){
 						System.out.println("I'm sorry, " + playerMove + " is not a valid card. Please try again.");
-						cardChosen = keyStroke.nextInt();
-						
-					}while(cardChosen != 1 &&cardChosen != 2 &&cardChosen != 3&&cardChosen != 4&&cardChosen != 5);
+						playerMove = keyStroke.next();
+					}
 				}
+				
+				cardChosen = Integer.parseInt(playerMove);
+				
 				for (int i = 0; i<6; i++){
 					if (cardChosen == i ){
 						player1Hand.get(i-1).setTurnPlayed(Turn);
@@ -173,11 +175,29 @@ public class mainGame {
 				playerMove = keyStroke.next();
 			}
 			
+			if (!playerMove.equalsIgnoreCase("B") && !playerMove.equalsIgnoreCase("C") ) {
+				while(!playerMove.equalsIgnoreCase("B") && !playerMove.equalsIgnoreCase("C")) {
+					System.out.println("I'm sorry, " + playerMove + " is not a valid move. Please try again.");
+					System.out.println("You must choose either options B or C.");
+					playerMove = keyStroke.next();
+				}
+			}
+			
 			if(playerMove.equalsIgnoreCase("B")){
 				do{	
 					if(player1Field.size()>0){
 						System.out.println(player1Side(player1Field) + "\n Which card would you like to attack with? Exit by entering 0");
-						cardChosen = keyStroke.nextInt();
+						playerMove = keyStroke.next();
+						
+						if (!playerMove.equals("1") && !playerMove.equals("2") && !playerMove.equals("3") && !playerMove.equals("4") && !playerMove.equals("5")){ //Check to make sure Player chooses a card
+							while(!playerMove.equals("1") && !playerMove.equals("2") && !playerMove.equals("3") && !playerMove.equals("4") && !playerMove.equals("5")){
+								System.out.println("I'm sorry, " + playerMove + " is not a valid card. Please try again.");
+								playerMove = keyStroke.next();
+							}
+						}
+						
+						cardChosen = Integer.parseInt(playerMove);
+						
 						boolean okayCard = false;
 						do {
 							
@@ -214,7 +234,7 @@ public class mainGame {
 								if (player2Field.size() < cardChosen - 1){
 									while(player2Field.size() < cardChosen - 1){
 										System.out.println("That is not a valid card number. Enter Another Card");
-										cardChosen = keyStroke.nextInt();
+																		cardChosen = keyStroke.nextInt();
 									}
 								}
 							
@@ -315,15 +335,17 @@ public class mainGame {
 				System.out.println("Which Card would you like to summon?");
 				System.out.println(displayCard(player2Hand));
 				
-				cardChosen = keyStroke.nextInt();
+				playerMove = keyStroke.next();
 				
-				if (cardChosen != 1 &&cardChosen != 2 &&cardChosen != 3&&cardChosen != 4&&cardChosen != 5){ //Check to make sure Player chooses a card
-					do{
+				if (!playerMove.equals("1") && !playerMove.equals("2") && !playerMove.equals("3") && !playerMove.equals("4") && !playerMove.equals("5")){ //Check to make sure Player chooses a card
+					while(!playerMove.equals("1") && !playerMove.equals("2") && !playerMove.equals("3") && !playerMove.equals("4") && !playerMove.equals("5")){
 						System.out.println("I'm sorry, " + playerMove + " is not a valid card. Please try again.");
-						cardChosen = keyStroke.nextInt();
-						
-					}while(cardChosen != 1 &&cardChosen != 2 &&cardChosen != 3&&cardChosen != 4&&cardChosen != 5);
+						playerMove = keyStroke.next();
+					}
 				}
+				
+				cardChosen = Integer.parseInt(playerMove);
+				
 				for (int i = 0; i<6; i++){
 					if (cardChosen == i ){
 						player2Hand.get(i-1).setTurnPlayed(Turn);
@@ -347,11 +369,27 @@ public class mainGame {
 				playerMove = keyStroke.next();
 			}
 			
+			if (!playerMove.equalsIgnoreCase("B") && !playerMove.equalsIgnoreCase("C") ) {
+				while(!playerMove.equalsIgnoreCase("B") && !playerMove.equalsIgnoreCase("C")) {
+					System.out.println("I'm sorry, " + playerMove + " is not a valid move. Please try again.");
+					System.out.println("You must choose either options B or C.");
+					playerMove = keyStroke.next();
+				}
+			}
 			if(playerMove.equalsIgnoreCase("B")){
 				do{	
 					if(player2Field.size()>0){
 						System.out.println(player2Side(player2Field) + "\n Which card would you like to attack with? Exit by entering 0");
-						cardChosen = keyStroke.nextInt();
+						playerMove = keyStroke.next();
+						
+						if (!playerMove.equals("1") && !playerMove.equals("2") && !playerMove.equals("3") && !playerMove.equals("4") && !playerMove.equals("5")){ //Check to make sure Player chooses a card
+							while(!playerMove.equals("1") && !playerMove.equals("2") && !playerMove.equals("3") && !playerMove.equals("4") && !playerMove.equals("5")){
+								System.out.println("I'm sorry, " + playerMove + " is not a valid card. Please try again.");
+								playerMove = keyStroke.next();
+							}
+						}
+						
+						cardChosen = Integer.parseInt(playerMove);
 						boolean okayCard = false;
 						do {
 							
